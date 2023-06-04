@@ -1,7 +1,8 @@
 from datetime import datetime
 import unittest
-# from PivotIntervalScheduler import PivotIntervalScheduler as IntervalScheduler, Request 
-from GreedyIntervalScheduler import GreedyIntervalScheduler as IntervalScheduler, Request 
+
+from PivotIntervalScheduler import PivotIntervalScheduler as IntervalScheduler, Request 
+# from GreedyIntervalScheduler import GreedyIntervalScheduler as IntervalScheduler, Request 
 
 class TestIntervalScheduler(unittest.TestCase):
 

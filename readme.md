@@ -3,6 +3,8 @@ Interval Scheduling Kata
 
 Given a resource, such as a meeting room, and a number of requests for exclusive use of the resource, specific to start and end times, find the largest set of exclusive usages, where largest is defined by quantity of usages.
 
+Note: The following is a personal attempt to solve the problem and notably wasn't the most efficient, however the official solution is also analysed below
+
 Problem analysis
 ---
 ### Solvability and Solution Quality
@@ -130,6 +132,10 @@ END FUNCTION
 - The solution is stable, and will have a preference for shorter and earlier requests due to the iteration through pivots sequentially and their comparisons at the iteration level.
 - An ID was added to the request to as this would be needed to allow handling of duplicate requests. Without a request ID, the question of stablity is not relevent as there is no link back to the originating request.
 
+### Implementation
+
+- 'PivotIntervalScheduler.py'. Test via running `IntervalScheduler_test.py`
+
 ### Further Optimisations
 
 - Greedy approach of limiting search branches. The FOR loops could be opinionated on which pivots are worth persuing, based on some imperfect presumptions to reduce computation time. An example presumption would be that only requests below a certain size are worth persuing.
@@ -166,3 +172,7 @@ FOR index IN LENGTH(ordered_requests):
     END IF
 END FOR
 ```
+
+### Implementation
+
+- 'GreedyIntervalScheduler.py'. Test via editing the imported strategy in and then running: `IntervalScheduler_test.py`
