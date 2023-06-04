@@ -26,36 +26,36 @@ Problem analysis
 - Stability could come in two forms: fully dependent on input ordering; dependant on ordered inputs, then dependant on original ordering for duplicates. However for duplicates some unique input identifer would be needed to refer back to which request was successfully scheduled.
 
 ### Brute force
-Brute force approach = loop permutations verifiying validity, valid permutation is set as answer, if it's larger than prior answer
+Brute force approach = loop combinations verifiying validity, valid combination is set as answer, if it's larger than prior answer
     (m = number of requests)
     - time complexity
-        - loop permutations efficiency = O(2^n) ordered combinations aren't required (as the exclusive set is naturally ordered by start time), permutations increase exponentially as the number of items increase
-        - verify permutation efficiency = O(n) per loop, check each item for overlap with neighbour, assumes a pre-ordered list of requests (ordered by start time)
+        - loop combinations efficiency = O(2^n) ordered combinations aren't required (as the exclusive set is naturally ordered by start time), combinations increase exponentially as the number of items increase
+        - verify combination efficiency = O(n) per loop, check each item for overlap with neighbour, assumes a pre-ordered list of requests (ordered by start time)
         - pre-order list efficiency = O(n^2)
-        - compare permutation size efficiency = n(1) per loop
+        - compare combination size efficiency = n(1) per loop
         - = total time complexity of O(2^n)
     - space complexity
-        - loop permutations: O(1) through enumaration
-        - verify permutation: O(1) by verifying neighbours
+        - loop combinations: O(1) through enumeration
+        - verify combination: O(1) by verifying neighbours
         - pre-order list: O(n)
-        - compare permutation: O(n) by only storing one best permutation of n requests to compare to current permutation
+        - compare combination: O(n) by only storing one best combination of n requests to compare to current combination
         - = total space complexity of O(n)
 
 Solution analysis
 ---
 
 ### Algorithmic patterns
-- Due to the permutations nature of the problem space, and due to the reuse of subsets of permutations within in potetential answers, this problem intuitively lends itself to known algorithmic patterns:
+- Due to the combinations nature of the problem space, and due to the reuse of subsets of combinations within in potetential answers, this problem intuitively lends itself to known algorithmic patterns:
     1. dynamic programming, where a each smaller set of requests can be calculated for validity and then used in supersets. This may either apply as a core algorithm or as an optimisation to improve the average.
     2. greedy algorithm, where we start with least impactful request, i.e. one with minimal overlaps, and build our set of requests progressively from there. As always with greedy, this would often find a local minima, but could be useful in large data sets where other algorithms are too expensive in time complexity
     3. divide and conquer, where requests are clustered, and the clusters don't overlap, each cluster can be divided away and conquered separately. This approach may be a step improvement in the average case, or when particularly well suited to a domain, it could be highly benefical to the average case, such as large but highly clusterd data (such as hotel bookings on seasonal properties).
-    4. tree stuctured exploration, where the permutations are explored based on a self organising structure, rather than upfront definition
+    4. tree stuctured exploration, where the combinations are explored based on a self organising structure, rather than upfront definition
 
 ### Improving on brute force
-The brute force approach largest limitation is the permutation loop time complexity, so this should be the target of reduction. Below that is the pre-order time complexity, of O(n^2), so we should look to reduce towards that. The pre-order list step is required to keep the verifiy permutation step from increasing from O(n) to O(o^2) (within the permutation loops), so the pre-order is unlikely to reducable. 
+The brute force approach largest limitation is the combination loop time complexity, so this should be the target of reduction. Below that is the pre-order time complexity, of O(n^2), so we should look to reduce towards that. The pre-order list step is required to keep the verifiy combination step from increasing from O(n) to O(o^2) (within the combination loops), so the pre-order is unlikely to reducable. 
 The brute force approach space complexity limitation of O(n) cannot be reduced as the output space complexity is also O(n).
 
-The permutations loop may be reducable to O(n^2), by first ordering the dataset, and then exploring it as an ordered tree structure of permutations. This can be achieved by spliting the input set at each request giving a left subset, a pivot request, and a right subset, for each of the n requests. The left and right set can then be solved recursivly, by finding all the pivots that are valid for the parent available time window, and then going to the left and right of that within the recursive subset (for those left/right subsets that exist). This pivot split continues until the recursive subset is a single request and cannot be broken further. Through dynamic programming each recursive set can be memoised, based on the sub-window and subset. Due to the processing only of unique sequential chains of requests (rather than every permutation), the loop will be for every possible subset size (=n-1), multiplied by every shifted position of that size (<=n), therefore O(n^2).
+The combinations loop may be reducable to O(n^2), by first ordering the dataset, and then exploring it as an ordered tree structure of combinations. This can be achieved by spliting the input set at each request giving a left subset, a pivot request, and a right subset, for each of the n requests. The left and right set can then be solved recursivly, by finding all the pivots that are valid for the parent available time window, and then going to the left and right of that within the recursive subset (for those left/right subsets that exist). This pivot split continues until the recursive subset is a single request and cannot be broken further. Through dynamic programming each recursive set can be memoised, based on the sub-window and subset. Due to the processing only of unique sequential chains of requests (rather than every combination), the loop will be for every possible subset size (=n-1), multiplied by every shifted position of that size (<=n), therefore O(n^2).
 
 Pseudocode
 ---
